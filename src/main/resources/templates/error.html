@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Something went wrong</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            max-width: 40rem;
+            margin: 4rem auto;
+            padding: 0 1rem;
+            color: #2c3e50;
+        }
+        h1 { font-size: 2rem; }
+        p { line-height: 1.5; }
+    </style>
+</head>
+<body>
+    <h1>Something went wrong</h1>
+    <p>The server could not handle this request. Check the address and try again.</p>
+    <dl>
+        <dt>Status</dt>
+        <dd id="status" th:text="${status}">000</dd>
+        <dt>Path</dt>
+        <dd id="path" th:text="${path}">/unknown</dd>
+    </dl>
+</body>
+</html>
