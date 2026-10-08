@@ -14,15 +14,20 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 @SpringBootTest
 @AutoConfigureMockMvc
 class TimeControllerTest {
+    // MockMvc lets us test the controller without a real HTTP connection.
     @Autowired
     private lateinit var mockMvc: MockMvc
 
     @Test
     fun timeIsJson() {
+        // Request the current server time as JSON.
         mockMvc
             .perform(get("/time").accept(MediaType.APPLICATION_JSON))
+            // Check that the request is successful.
             .andExpect(status().isOk)
+            // Check that the response is JSON.
             .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+            // Check that the JSON contains the time field.
             .andExpect(jsonPath("$.time").exists())
     }
 }

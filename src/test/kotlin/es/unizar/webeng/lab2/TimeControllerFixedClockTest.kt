@@ -17,12 +17,14 @@ import java.time.LocalDateTime
 @SpringBootTest
 @AutoConfigureMockMvc
 class TimeControllerFixedClockTest {
+    // Test configuration that replaces the real clock with a fixed one.
     @TestConfiguration
     class FixedClockConfiguration {
         @Bean
         @Primary
         fun fixedTimeProvider(): TimeProvider =
             object : TimeProvider {
+                // Always return the same time during this test.
                 override fun now(): LocalDateTime = FIXED_TIME
             }
     }
@@ -32,6 +34,7 @@ class TimeControllerFixedClockTest {
 
     @Test
     fun timeIsTheOneGivenByTheProvider() {
+        // Request the time and check the exact value returned.
         mockMvc
             .perform(get("/time").accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk)
@@ -39,6 +42,8 @@ class TimeControllerFixedClockTest {
     }
 
     companion object {
-        private val FIXED_TIME: LocalDateTime = LocalDateTime.of(2026, 10, 7, 18, 30, 15)
+        // Fixed time used to make the test predictable.
+        private val FIXED_TIME: LocalDateTime =
+            LocalDateTime.of(2026, 10, 7, 18, 30, 15)
     }
 }

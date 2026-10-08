@@ -6,41 +6,42 @@ import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDateTime
 
 /**
- * JSON body returned by `GET /time`.
- *
- * @property time the server time, serialized as an ISO-8601 local date-time.
+ * Data returned by the /time endpoint.
  */
 data class TimeDTO(
     val time: LocalDateTime,
 )
 
 /**
- * Source of the current time. The controller depends on this interface so a test can replace the clock.
+ * Provides the current date and time.
  */
 interface TimeProvider {
-    /** Returns the current date and time. */
     fun now(): LocalDateTime
 }
 
 /**
- * [TimeProvider] backed by the system clock in the server's default time zone.
+ * Gets the current time from the system clock.
  */
 @Service
 class TimeService : TimeProvider {
     override fun now(): LocalDateTime = LocalDateTime.now()
 }
 
-/** Wraps this date-time in the DTO returned by the API. */
+/**
+ * Converts a LocalDateTime into a TimeDTO.
+ */
 fun LocalDateTime.toDTO(): TimeDTO = TimeDTO(time = this)
 
 /**
- * Exposes the current server time over HTTP.
+ * Controller for the /time endpoint.
  */
 @RestController
 class TimeController(
     private val service: TimeProvider,
 ) {
-    /** Handles `GET /time` and returns the time given by the [TimeProvider]. */
+    /**
+     * Returns the current server time.
+     */
     @GetMapping("/time")
     fun time(): TimeDTO = service.now().toDTO()
 }
